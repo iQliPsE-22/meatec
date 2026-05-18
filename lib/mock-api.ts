@@ -7,7 +7,7 @@ import {
   STATUS_OPTIONS,
 } from "./constants";
 import { loadSnapshot, saveSnapshot } from "./storage";
-import type { Credentials, PersistedSnapshot, Task, TaskInput } from "./types";
+import type { Credentials, PersistedSnapshot, Task, TaskInput } from "@/types";
 
 function delay(duration = NETWORK_DELAY_MS) {
   return new Promise((resolve) => window.setTimeout(resolve, duration));

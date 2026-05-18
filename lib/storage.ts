@@ -1,5 +1,5 @@
 import { DEFAULT_TASKS, STORAGE_KEY } from "./constants";
-import type { PersistedSnapshot } from "./types";
+import type { PersistedSnapshot } from "@/types";
 
 function createDefaultSnapshot(): PersistedSnapshot {
   return {

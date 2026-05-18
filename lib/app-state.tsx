@@ -14,7 +14,7 @@ import type {
   PersistedSnapshot,
   TaskInput,
   Theme,
-} from "./types";
+} from "@/types";
 
 type AppStateContextValue = {
   state: AppState;

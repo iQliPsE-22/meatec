@@ -3,12 +3,14 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
+import { AntdRegistry } from "@ant-design/nextjs-registry";
 
-const geist = Geist({subsets:['latin'],variable:'--font-sans'});
+const geist = Geist({ subsets: ["latin"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Pulse Tasks",
-  description: "Frontend-only task management workspace with mocked auth and CRUD flows.",
+  title: "MeaTech Tasks",
+  description:
+    "Frontend-only task management workspace with mocked auth and CRUD flows.",
 };
 
 export default function RootLayout({
@@ -17,9 +19,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={cn("h-full antialiased", "font-sans", geist.variable)}>
+    <html
+      lang="en"
+      className={cn("h-full antialiased", "font-sans", geist.variable)}
+    >
       <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+        <AntdRegistry>
+          <Providers>{children}</Providers>
+        </AntdRegistry>
       </body>
     </html>
   );

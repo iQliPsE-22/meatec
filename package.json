@@ -11,16 +11,16 @@
     "test:coverage": "vitest run --coverage"
   },
   "dependencies": {
-    "@base-ui/react": "^1.4.1",
-    "class-variance-authority": "^0.7.1",
+    "@ant-design/icons": "^6.2.3",
+    "@ant-design/nextjs-registry": "^1.3.0",
+    "antd": "^6.4.2",
     "clsx": "^2.1.1",
-    "lucide-react": "^1.16.0",
+    "formik": "^2.4.9",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
-    "shadcn": "^4.7.0",
     "tailwind-merge": "^3.6.0",
-    "tw-animate-css": "^1.4.0"
+    "yup": "^1.7.1"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",

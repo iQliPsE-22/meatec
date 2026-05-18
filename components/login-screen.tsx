@@ -4,17 +4,14 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DEMO_CREDENTIALS } from "@/lib/constants";
 import { useAppState } from "@/lib/app-state";
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, Form, Input, Button, Alert, Typography, Layout, theme } from "antd";
+
+const { Title, Text } = Typography;
 
 export function LoginScreen() {
   const router = useRouter();
   const { state, login, setTheme, clearError } = useAppState();
-  const [username, setUsername] = useState<string>(DEMO_CREDENTIALS.username);
-  const [password, setPassword] = useState<string>(DEMO_CREDENTIALS.password);
+  const { token } = theme.useToken();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
@@ -30,11 +27,9 @@ export function LoginScreen() {
 
   const isDark = state.theme === "dark";
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onFinish(values: any) {
     clearError();
-
-    const didLogin = await login({ username, password });
+    const didLogin = await login({ username: values.username, password: values.password });
     if (didLogin) {
       router.push("/dashboard");
     }
@@ -45,121 +40,76 @@ export function LoginScreen() {
   }
 
   return (
-    <main className="flex min-h-screen items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
-      <div className="grid w-full max-w-5xl overflow-hidden rounded-[32px] border bg-card text-card-foreground shadow-lg lg:grid-cols-[1.1fr_0.9fr]">
-        <section className="relative overflow-hidden px-6 py-8 sm:px-10 sm:py-12 lg:px-14">
-          <div className="flex items-center justify-between gap-4">
-            <div>
-              <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                Task Manager
-              </p>
-              <h1 className="mt-4 max-w-xl text-3xl font-semibold leading-tight text-balance sm:text-4xl">
-                Organize your work and stay on top of your priorities.
-              </h1>
-            </div>
-            <Button
-              variant="outline"
-              size="sm"
-              className="rounded-full"
-              onClick={() => setTheme(isDark ? "light" : "dark")}
-            >
-              {isDark ? "Light" : "Dark"} mode
-            </Button>
-          </div>
-
-          <p className="mt-6 max-w-lg text-base leading-7 text-muted-foreground [text-wrap:pretty]">
-            A clean, responsive task management dashboard with mocked authentication and persisted state for local development and testing.
-          </p>
-
-          <div className="mt-10 grid gap-4 sm:grid-cols-2">
-            {[
-              ["Secure Auth", "Mocked JWT and protected routes."],
-              ["Task Management", "Create, edit, and organize your tasks easily."],
-              ["Persistent Storage", "Your data stays intact across reloads."],
-            ].map(([title, description]) => (
-              <Card key={title} className="bg-muted/50 border-none shadow-none">
-                <CardHeader className="p-4 pb-2">
-                  <CardTitle className="text-sm uppercase tracking-wide">{title}</CardTitle>
-                </CardHeader>
-                <CardContent className="p-4 pt-0">
-                  <p className="text-sm text-muted-foreground">{description}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          <div className="mt-8 rounded-2xl border bg-muted/30 p-6">
-            <div className="flex flex-wrap items-center justify-between gap-4">
-              <div>
-                <p className="text-sm font-semibold uppercase tracking-wider text-muted-foreground">
-                  Demo Access
-                </p>
-                <p className="mt-1 text-base font-medium">Use the test credentials</p>
-              </div>
-              <div className="rounded-xl bg-background px-4 py-3 text-sm font-medium border">
-                <p>
-                  Username: <span className="font-mono text-primary">{DEMO_CREDENTIALS.username}</span>
-                </p>
-                <p className="mt-1">
-                  Password: <span className="font-mono text-primary">{DEMO_CREDENTIALS.password}</span>
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        <section className="flex flex-col justify-center border-t bg-muted/10 px-6 py-8 sm:px-10 sm:py-12 lg:border-t-0 lg:border-l">
-          <div className="mx-auto w-full max-w-md">
-            <div className="space-y-2">
-              <h2 className="text-2xl font-semibold tracking-tight">Sign In</h2>
-              <p className="text-sm text-muted-foreground">
-                Enter your credentials to access your dashboard.
-              </p>
-            </div>
-
-            <form className="mt-8 space-y-5" onSubmit={handleSubmit}>
-              <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
-                <Input
-                  id="username"
-                  name="username"
-                  value={username}
-                  onChange={(event) => setUsername(event.target.value)}
-                  placeholder="Enter username"
-                  className="h-12"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input
-                  id="password"
-                  name="password"
-                  type="password"
-                  value={password}
-                  onChange={(event) => setPassword(event.target.value)}
-                  placeholder="Enter password"
-                  className="h-12"
-                />
-              </div>
-
-              {state.error ? (
-                <Alert variant="destructive">
-                  <AlertDescription>{state.error}</AlertDescription>
-                </Alert>
-              ) : null}
-
-              <Button
-                type="submit"
-                className="w-full h-12 text-base font-semibold"
-                disabled={state.authStatus === "loading"}
-              >
-                {state.authStatus === "loading" ? "Signing in..." : "Sign In"}
-              </Button>
-            </form>
-          </div>
-        </section>
+    <Layout className="flex min-h-screen w-full items-center justify-center p-6 md:p-10">
+      <div className="absolute top-4 right-4">
+        <Button onClick={() => setTheme(isDark ? "light" : "dark")}>
+          {isDark ? "Light Mode" : "Dark Mode"}
+        </Button>
       </div>
-    </main>
+      <div className="w-full max-w-sm">
+        <Card bordered={false} className="shadow-lg">
+          <div className="text-center mb-6">
+            <Title level={3} className="!mb-1">Sign In</Title>
+            <Text type="secondary">Enter your credentials to access your dashboard</Text>
+          </div>
+
+          <Form
+            layout="vertical"
+            initialValues={{
+              username: DEMO_CREDENTIALS.username,
+              password: DEMO_CREDENTIALS.password,
+            }}
+            onFinish={onFinish}
+            onChange={clearError}
+            requiredMark={false}
+          >
+            <Form.Item
+              label="Username"
+              name="username"
+              rules={[{ required: true, message: "Please input your username!" }]}
+            >
+              <Input size="large" placeholder="Enter username" />
+            </Form.Item>
+
+            <Form.Item
+              label="Password"
+              name="password"
+              rules={[{ required: true, message: "Please input your password!" }]}
+            >
+              <Input.Password size="large" placeholder="Enter password" />
+            </Form.Item>
+
+            {state.error ? (
+              <Alert
+                message={state.error}
+                type="error"
+                showIcon
+                className="mb-4"
+              />
+            ) : null}
+
+            <Form.Item className="mb-0 mt-6">
+              <Button
+                type="primary"
+                htmlType="submit"
+                size="large"
+                block
+                loading={state.authStatus === "loading"}
+              >
+                Sign In
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <div className="mt-8 rounded-xl p-4 text-center border" style={{ backgroundColor: token.colorFillAlter }}>
+            <Text className="text-xs uppercase tracking-wider font-semibold" style={{ color: token.colorTextSecondary }}>Demo Access</Text>
+            <div className="mt-2 text-sm font-mono">
+              <div>U: {DEMO_CREDENTIALS.username}</div>
+              <div>P: {DEMO_CREDENTIALS.password}</div>
+            </div>
+          </div>
+        </Card>
+      </div>
+    </Layout>
   );
 }

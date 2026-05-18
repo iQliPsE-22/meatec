@@ -1,4 +1,4 @@
-import type { Session, Task, TaskStatus } from "./types";
+import type { Session, Task, TaskStatus } from "@/types";
 
 export const STORAGE_KEY = "pulse-tasks.store.v1";
 export const MOCK_API_ORIGIN = "https://pulse.mock";
