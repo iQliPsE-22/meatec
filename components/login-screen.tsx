@@ -4,7 +4,16 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { DEMO_CREDENTIALS } from "@/lib/constants";
 import { useAppState } from "@/lib/app-state";
-import { Card, Form, Input, Button, Alert, Typography, Layout, theme } from "antd";
+import {
+  Card,
+  Form,
+  Input,
+  Button,
+  Alert,
+  Typography,
+  Layout,
+  theme,
+} from "antd";
 
 const { Title, Text } = Typography;
 
@@ -29,7 +38,10 @@ export function LoginScreen() {
 
   async function onFinish(values: any) {
     clearError();
-    const didLogin = await login({ username: values.username, password: values.password });
+    const didLogin = await login({
+      username: values.username,
+      password: values.password,
+    });
     if (didLogin) {
       router.push("/dashboard");
     }
@@ -49,8 +61,12 @@ export function LoginScreen() {
       <div className="w-full max-w-sm">
         <Card bordered={false} className="shadow-lg">
           <div className="text-center mb-6">
-            <Title level={3} className="!mb-1">Sign In</Title>
-            <Text type="secondary">Enter your credentials to access your dashboard</Text>
+            <Title level={3} className="!mb-1">
+              Sign In
+            </Title>
+            <Text type="secondary">
+              Enter your credentials to access your dashboard
+            </Text>
           </div>
 
           <Form
@@ -66,17 +82,21 @@ export function LoginScreen() {
             <Form.Item
               label="Username"
               name="username"
-              rules={[{ required: true, message: "Please input your username!" }]}
+              rules={[
+                { required: true, message: "Please input your username!" },
+              ]}
             >
-              <Input size="large" placeholder="Enter username" />
+              <Input size="medium" placeholder="Enter username" />
             </Form.Item>
 
             <Form.Item
               label="Password"
               name="password"
-              rules={[{ required: true, message: "Please input your password!" }]}
+              rules={[
+                { required: true, message: "Please input your password!" },
+              ]}
             >
-              <Input.Password size="large" placeholder="Enter password" />
+              <Input.Password size="medium" placeholder="Enter password" />
             </Form.Item>
 
             {state.error ? (
@@ -92,7 +112,7 @@ export function LoginScreen() {
               <Button
                 type="primary"
                 htmlType="submit"
-                size="large"
+                size="medium"
                 block
                 loading={state.authStatus === "loading"}
               >
@@ -101,8 +121,16 @@ export function LoginScreen() {
             </Form.Item>
           </Form>
 
-          <div className="mt-8 rounded-xl p-4 text-center border" style={{ backgroundColor: token.colorFillAlter }}>
-            <Text className="text-xs uppercase tracking-wider font-semibold" style={{ color: token.colorTextSecondary }}>Demo Access</Text>
+          <div
+            className="mt-8 rounded-xl p-4 text-center border"
+            style={{ backgroundColor: token.colorFillAlter }}
+          >
+            <Text
+              className="text-xs uppercase tracking-wider font-semibold"
+              style={{ color: token.colorTextSecondary }}
+            >
+              Demo Access
+            </Text>
             <div className="mt-2 text-sm font-mono">
               <div>U: {DEMO_CREDENTIALS.username}</div>
               <div>P: {DEMO_CREDENTIALS.password}</div>

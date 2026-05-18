@@ -1,9 +1,21 @@
 "use client";
 
+import type { CSSProperties } from "react";
 import { Card, type CardProps, theme } from "antd";
+
+type SurfaceCardStyles = {
+  root?: CSSProperties;
+  header?: CSSProperties;
+  body?: CSSProperties;
+  extra?: CSSProperties;
+  title?: CSSProperties;
+  actions?: CSSProperties;
+  cover?: CSSProperties;
+};
 
 type SurfaceCardProps = CardProps & {
   tone?: "strong" | "subtle";
+  styles?: SurfaceCardStyles;
 };
 
 export function SurfaceCard({

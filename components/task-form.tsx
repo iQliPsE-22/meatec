@@ -47,12 +47,18 @@ export function TaskForm({ initialValues, isSaving, onSubmit }: TaskFormProps) {
     >
       <Form.Item
         label="Title"
-        validateStatus={formik.touched.title && formik.errors.title ? "error" : ""}
-        help={formik.touched.title && formik.errors.title ? formik.errors.title : undefined}
+        validateStatus={
+          formik.touched.title && formik.errors.title ? "error" : ""
+        }
+        help={
+          formik.touched.title && formik.errors.title
+            ? formik.errors.title
+            : undefined
+        }
       >
-        <Input 
+        <Input
           id="task-title"
-          size="large" 
+          size="medium"
           placeholder="e.g., Prepare release checklist"
           name="title"
           value={formik.values.title}
@@ -63,12 +69,18 @@ export function TaskForm({ initialValues, isSaving, onSubmit }: TaskFormProps) {
 
       <Form.Item
         label="Description"
-        validateStatus={formik.touched.description && formik.errors.description ? "error" : ""}
-        help={formik.touched.description && formik.errors.description ? formik.errors.description : undefined}
+        validateStatus={
+          formik.touched.description && formik.errors.description ? "error" : ""
+        }
+        help={
+          formik.touched.description && formik.errors.description
+            ? formik.errors.description
+            : undefined
+        }
       >
         <Input.TextArea
           id="task-description"
-          size="large"
+          size="medium"
           rows={4}
           className="resize-none"
           placeholder="e.g., Document QA steps, assign owners, and confirm launch timing."
@@ -81,12 +93,18 @@ export function TaskForm({ initialValues, isSaving, onSubmit }: TaskFormProps) {
 
       <Form.Item
         label="Status"
-        validateStatus={formik.touched.status && formik.errors.status ? "error" : ""}
-        help={formik.touched.status && formik.errors.status ? formik.errors.status : undefined}
+        validateStatus={
+          formik.touched.status && formik.errors.status ? "error" : ""
+        }
+        help={
+          formik.touched.status && formik.errors.status
+            ? formik.errors.status
+            : undefined
+        }
       >
-        <Select 
+        <Select
           id="task-status"
-          size="large" 
+          size="medium"
           placeholder="Select a status"
           value={formik.values.status}
           onChange={(val) => formik.setFieldValue("status", val)}
@@ -105,7 +123,7 @@ export function TaskForm({ initialValues, isSaving, onSubmit }: TaskFormProps) {
         <Button
           type="primary"
           htmlType="submit"
-          size="large"
+          size="medium"
           loading={isSaving}
           className="font-semibold"
         >

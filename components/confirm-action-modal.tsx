@@ -35,9 +35,9 @@ export function ConfirmActionModal({
         <Paragraph className="!mb-0 leading-6">
           <Text type="secondary">{description}</Text>
         </Paragraph>
-        <div className="flex justify-end gap-3">
+        <div className="mt-4 flex justify-end gap-3">
           <Button
-            size="large"
+            size="medium"
             shape="round"
             className="min-h-10 px-5 active:scale-[0.96] transition-transform"
             onClick={onCancel}
@@ -47,7 +47,7 @@ export function ConfirmActionModal({
           <Button
             danger
             type="primary"
-            size="large"
+            size="medium"
             shape="round"
             loading={isLoading}
             className="min-h-10 px-5 font-semibold active:scale-[0.96] transition-transform"
