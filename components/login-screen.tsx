@@ -36,7 +36,7 @@ export function LoginScreen() {
 
   const isDark = state.theme === "dark";
 
-  async function onFinish(values: any) {
+  async function onFinish(values: { username: string; password: string }) {
     clearError();
     const didLogin = await login({
       username: values.username,

@@ -202,12 +202,18 @@ export function DashboardPage() {
     [state.tasks],
   );
 
-  const todoTasks = state.tasks.length - completedTasks - inProgressTasks;
+  const todoTasks = useMemo(
+    () => state.tasks.length - completedTasks - inProgressTasks,
+    [state.tasks.length, completedTasks, inProgressTasks],
+  );
 
-  const completionRate =
-    state.tasks.length === 0
-      ? 0
-      : Math.round((completedTasks / state.tasks.length) * 100);
+  const completionRate = useMemo(
+    () =>
+      state.tasks.length === 0
+        ? 0
+        : Math.round((completedTasks / state.tasks.length) * 100),
+    [completedTasks, state.tasks.length],
+  );
 
   const countLabel = useMemo(
     () => taskCountLabel(state.tasks.length, filteredTasks.length),
@@ -228,7 +234,10 @@ export function DashboardPage() {
     [state.tasks],
   );
 
-  const username = state.session?.username ?? "Guest";
+  const username = useMemo(
+    () => state.session?.username ?? "Guest",
+    [state.session],
+  );
 
   // ── Handlers ───────────────────────────────────────────────────────────────
 
@@ -277,72 +286,78 @@ export function DashboardPage() {
 
   // ── Table columns ──────────────────────────────────────────────────────────
 
-  const columns: TableProps<Task>["columns"] = [
-    {
-      title: "Task",
-      key: "task",
-      render: (_, task) => (
-        <div className="min-w-0">
-          <div className="text-sm font-semibold text-balance">{task.title}</div>
-          <Text
-            type="secondary"
-            className="mt-1 block text-sm leading-6 [text-wrap:pretty]"
+  const columns = useMemo<TableProps<Task>["columns"]>(
+    () => [
+      {
+        title: "Task",
+        key: "task",
+        render: (_, task) => (
+          <div className="min-w-0">
+            <div className="text-sm font-semibold text-balance">{task.title}</div>
+            <Text
+              type="secondary"
+              className="mt-1 block text-sm leading-6 [text-wrap:pretty]"
+            >
+              {task.description}
+            </Text>
+          </div>
+        ),
+      },
+      {
+        title: "Status",
+        dataIndex: "status",
+        key: "status",
+        width: 152,
+        render: (_, task) => (
+          <Tag
+            color={getStatusTagColor(task.status)}
+            className="m-0 rounded-full px-3 py-1 uppercase tracking-[0.16em]"
           >
-            {task.description}
-          </Text>
-        </div>
-      ),
-    },
-    {
-      title: "Status",
-      dataIndex: "status",
-      key: "status",
-      width: 152,
-      render: (_, task) => (
-        <Tag
-          color={getStatusTagColor(task.status)}
-          className="m-0 rounded-full px-3 py-1 uppercase tracking-[0.16em]"
-        >
-          {STATUS_LABELS[task.status]}
-        </Tag>
-      ),
-    },
-    {
-      title: "Updated",
-      dataIndex: "updatedAt",
-      key: "updatedAt",
-      width: 160,
-      render: (value: string) => (
-        <span className="text-sm tabular-nums">{formatDate(value)}</span>
-      ),
-    },
-    {
-      title: "Actions",
-      key: "actions",
-      width: 200,
-      render: (_, task) => (
-        <div className="flex items-center justify-end gap-2">
-          <Button
-            shape="round"
-            className="min-h-10 px-4 active:scale-[0.96] transition-transform"
-            onClick={() => handleStartEdit(task)}
-          >
-            Edit
-          </Button>
-          <Button
-            danger
-            type="primary"
-            shape="round"
-            className="min-h-10 px-4 active:scale-[0.96] transition-transform"
-            loading={state.deletingTaskId === task.id}
-            onClick={() => handleDeleteIntent(task.id)}
-          >
-            Delete
-          </Button>
-        </div>
-      ),
-    },
-  ];
+            {STATUS_LABELS[task.status]}
+          </Tag>
+        ),
+      },
+      {
+        title: "Updated",
+        dataIndex: "updatedAt",
+        key: "updatedAt",
+        width: 160,
+        render: (value: string) => (
+          <span className="text-sm tabular-nums">{formatDate(value)}</span>
+        ),
+      },
+      {
+        title: "Actions",
+        key: "actions",
+        width: 200,
+        render: (_, task) => (
+          <div className="flex items-center justify-end gap-2">
+            <Button
+              shape="round"
+              aria-label={`Edit task: ${task.title}`}
+              className="min-h-10 px-4 active:scale-[0.96] transition-transform"
+              onClick={() => handleStartEdit(task)}
+            >
+              Edit
+            </Button>
+            <Button
+              danger
+              type="primary"
+              shape="round"
+              aria-label={`Delete task: ${task.title}`}
+              className="min-h-10 px-4 active:scale-[0.96] transition-transform"
+              loading={state.deletingTaskId === task.id}
+              onClick={() => handleDeleteIntent(task.id)}
+            >
+              Delete
+            </Button>
+          </div>
+        ),
+      },
+    ],
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [state.deletingTaskId],
+  );
 
   // ── Render ─────────────────────────────────────────────────────────────────
 
@@ -426,6 +441,7 @@ export function DashboardPage() {
                           shape="round"
                           size="middle"
                           icon={<ReloadOutlined />}
+                          aria-label="Refresh tasks"
                           className={`${BTN_BASE} h-9 lg:h-10 px-4 lg:px-5`}
                           onClick={() => void refreshTasks()}
                         >
@@ -563,7 +579,7 @@ export function DashboardPage() {
                   <div className="mt-4 lg:mt-5 overflow-hidden rounded-xl lg:rounded-[24px] bg-[var(--surface-strong)] shadow-[inset_0_0_0_1px_var(--border)]">
                     <Table<Task>
                       rowKey="id"
-                      columns={columns.slice(0, 3)} // Show only essential columns
+                      columns={columns!.slice(0, 3)} // Show only essential columns
                       dataSource={recentTasks}
                       pagination={false}
                       loading={state.tasksStatus === "loading"}
@@ -649,7 +665,7 @@ export function DashboardPage() {
                     className="min-h-11 lg:min-h-12 xl:max-w-md"
                   />
 
-                  <div className="flex flex-wrap gap-1.5 lg:gap-2 xl:justify-end">
+                  <div className="flex flex-wrap gap-1.5 lg:gap-2 xl:justify-end" role="group" aria-label="Filter tasks by status">
                     {FILTER_OPTIONS.map((opt) => (
                       <Button
                         key={opt.value}
@@ -658,6 +674,7 @@ export function DashboardPage() {
                         type={
                           activeFilter === opt.value ? "primary" : "default"
                         }
+                        aria-pressed={activeFilter === opt.value}
                         className="min-h-8 lg:min-h-9 px-3 lg:px-4 text-[13px] active:scale-[0.96] transition-transform"
                         onClick={() => setActiveFilter(opt.value)}
                       >

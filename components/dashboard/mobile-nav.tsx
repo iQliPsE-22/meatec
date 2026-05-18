@@ -1,14 +1,15 @@
 "use client";
 
+import type { FC } from "react";
 import {
   AppstoreOutlined,
   BarChartOutlined,
   SettingOutlined,
   UnorderedListOutlined,
 } from "@ant-design/icons";
-import { SidebarTabKey } from "./sidebar-nav";
+import type { SidebarTabKey } from "./sidebar-nav";
 
-const NAV_ITEMS: Array<{ key: SidebarTabKey; label: string; icon: any }> = [
+const NAV_ITEMS: Array<{ key: SidebarTabKey; label: string; icon: FC<{ className?: string }> }> = [
   { key: "overview", label: "Overview", icon: AppstoreOutlined },
   { key: "tasks", label: "Tasks", icon: UnorderedListOutlined },
   { key: "progress", label: "Stats", icon: BarChartOutlined },

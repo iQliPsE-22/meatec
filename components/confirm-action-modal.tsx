@@ -30,6 +30,7 @@ export function ConfirmActionModal({
       onCancel={onCancel}
       footer={null}
       destroyOnHidden
+      centered
     >
       <div className="mt-4 space-y-5">
         <Paragraph className="!mb-0 leading-6">

@@ -1,5 +1,6 @@
 "use client";
 
+import type { FC } from "react";
 import {
   AppstoreOutlined,
   BarChartOutlined,
@@ -9,7 +10,7 @@ import {
 
 export type SidebarTabKey = "overview" | "tasks" | "progress" | "settings";
 
-const SIDEBAR_ITEMS: Array<{ key: SidebarTabKey; label: string; icon: any }> = [
+const SIDEBAR_ITEMS: Array<{ key: SidebarTabKey; label: string; icon: FC<{ className?: string }> }> = [
   { key: "overview", label: "Overview", icon: AppstoreOutlined },
   { key: "tasks", label: "Tasks", icon: UnorderedListOutlined },
   { key: "progress", label: "Progress", icon: BarChartOutlined },

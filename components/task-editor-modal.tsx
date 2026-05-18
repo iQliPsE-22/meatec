@@ -29,6 +29,7 @@ export function TaskEditorModal({
       onCancel={onCancel}
       footer={null}
       destroyOnHidden
+      centered
     >
       <div className="mt-4">
         <TaskForm
